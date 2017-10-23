@@ -4,6 +4,8 @@
     Author     : formation
 --%>
 
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,7 +18,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+
         <script src="./bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
 
         <%!
@@ -28,9 +30,17 @@
             String inputAge;
             String message;
             String color;
+            Map<String, String> colorMap;
 
         %>
         <%
+            colorMap = new HashMap<String, String>();
+            colorMap.put("Rouge", "red");
+            colorMap.put("Vert", "green");
+            colorMap.put("Bleu", "blue");
+            colorMap.put("Gris", "CCCCCC");
+            colorMap.put("Brunh", "brown");
+
             // Récuperation d'un parametre
             name = request.getParameter("Who");
             // Affectation d'une valeur par defaut si l'utilisateur n'est pas renseigné ( hello.jsp? who=toto
@@ -56,19 +66,19 @@
 
             now = new Date();
             sf = new SimpleDateFormat("YYYY");
-            
+
             color = request.getParameter("color");
             if (color == null) {
-                    color = "white";
-                }
+                color = "white";
+            }
 
         %>
         <style>
             body{
                 background-color: <%= color%>;
             }
-            
-            
+
+
         </style>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
@@ -147,23 +157,42 @@
         <br>
         <div class="row">
             <div class="col-sm-2">
-        <form method="post">
+                <form method="post">
 
-            <div class="form-group" >
-                <p> Choisisez une couleur de fond<p>
-                    <select style="background-color: grey; font-weight: bold"  name="color" class="form-control">
-                        <option value="red" class="form-control" <%= color.equals("red")? "selected":""%> >Rouge</option>
-                        <option value="green" class="form-control" <%= color.equals("green")? "selected":""%>>Vert</option>
-                        <option value="blue" class="form-control" <%= color.equals("blue")? "selected":""%>>Bleu</option>
-                        <option value="CCCCCC" class="form-control" <%= color.equals("CCCCCC")? "selected":""%>>Gris</option>
-                    </select><br>
-            </div>
-            <div class="checkbox">
+                    <div class="form-group" >
+                        <p> Choisisez une couleur de fond<p>
+                            <select style="background-color: grey; font-weight: bold"  name="color" class="form-control">
+                                <%--
+                                <option value="red" class="form-control" <%= color.equals("red") ? "selected" : ""%> >Rouge</option>
+                                <option value="green" class="form-control" <%= color.equals("green") ? "selected" : ""%>>Vert</option>
+                                <option value="blue" class="form-control" <%= color.equals("blue") ? "selected" : ""%>>Bleu</option>
+                                <option value="CCCCCC" class="form-control" <%= color.equals("CCCCCC") ? "selected" : ""%>>Gris</option>
+                                --%>
+                                <%
+                                    String selected;
+                                    for (Map.Entry<String, String> en : colorMap.entrySet()) {
+                                        String key = en.getKey();
+                                        String val = en.getValue();
+                                        selected = color.equals(val) ? "selected" : "";
 
-                <button type="submit" class="btn btn-default">Submit</button>
-        </form> 
-        
+
+                                %>
+
+                                <option value="<%=val%>"<%=selected%>><%= key%></option>
+
+                                <%
+                                        // fin de boucle
+                                    }
+                                %>
+                            </select><br>
+                    </div>
+                    <div class="checkbox">
+
+                        <button type="submit" class="btn btn-default">Submit</button>
+                </form> 
+
             </div>
         </div>
+        <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
     </body>
 </html>
