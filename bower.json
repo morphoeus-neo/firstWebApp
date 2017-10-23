@@ -1,0 +1,17 @@
+{
+  "name": "firstWebApp",
+  "authors": [
+    "Aurelien Courgeau <aurelien.courgeau@delphi.com>"
+  ],
+  "description": "ma premiere application web",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
