@@ -28,9 +28,11 @@ public class DBCN {
      * Méthode Statique qui retourne toujours la même instance
      * @return
      * @throws SQLException 
+     * @throws java.lang.ClassNotFoundException 
      */
-    public static Connection getInstance() throws SQLException {
+    public static Connection getInstance() throws SQLException, ClassNotFoundException {
         if (instance == null) {
+            Class.forName("org.git.mm.mysql.Driver");
             instance = DriverManager.getConnection(
                     "jdbc:mysql://localhost/bibliotheque",
                     "root",

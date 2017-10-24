@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  *
  * @author formation
@@ -28,9 +27,9 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
 
     }
 
-    // un objet de type Student
+    // un objet de type author
     /**
-     * Persistance de l'entité Student
+     * Persistance de l'entité author
      *
      * @param entity
      * @return
@@ -61,16 +60,14 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
         pstm = DBCN.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         pstm.setString(1, entity.getName());
         pstm.setString(2, entity.getFirstName());
-        
-        
+
         // Récupération de la clef auto incrémentée
         ResultSet keyRs = pstm.getGeneratedKeys();
-        if(keyRs.next()){
+        if (keyRs.next()) {
             entity.setId(keyRs.getInt("id"));
-            
+
         }
-        
-        
+
         return pstm.executeUpdate();
     }
 
@@ -86,7 +83,7 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
 
         pstm = DBCN.prepareStatement(sql);
         pstm.setString(1, entity.getName());
-        pstm.setString(2, entity.getFirstName());      
+        pstm.setString(2, entity.getFirstName());
         pstm.setInt(3, entity.getId());
 
         return pstm.executeUpdate();
@@ -102,50 +99,50 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
         }
     }
 
-
     public AuthorDAO findOneById(int id) throws SQLException {
         String sql = "SELECT * FROM auteurs WHERE id=?";
         pstm = DBCN.prepareStatement(sql);
-        pstm.setInt(1,id);
+        pstm.setInt(1, id);
         pstm.executeUpdate();
         return this;
     }
 
     /**
      * Récupération d'une ligne de la table
+     *
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public Author getOne() throws SQLException {
         Author entity = new Author();
         if (resultSet.next()) {
             entity.setName(resultSet.getString("nom"));
             entity.setFirstName(resultSet.getString("prenom"));
-           
+            entity.setId(resultSet.getInt("id"));
 
         }
         return entity;
     }
-    
-    
+
     /**
-     * Récupération des rsultats d'ne requette sous la forme d'un tableau assiocatif
+     * Récupération des rsultats d'ne requette sous la forme d'un tableau
+     * assiocatif
+     *
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public Map<String, String> getOneAsMap() throws SQLException{
-        Map<String, String> studentData = new HashMap<>();
+    public Map<String, String> getOneAsMap() throws SQLException {
+        Map<String, String> authorData = new HashMap<>();
         if (resultSet.next()) {
-            studentData.put("nom", resultSet.getString("nom"));
-            studentData.put("prenom", resultSet.getString("prenom"));
+            authorData.put("name", resultSet.getString("nom"));
+            authorData.put("firstName", resultSet.getString("prenom"));
 
         }
 
-        return studentData;
+        return authorData;
     }
-    
-    
-       public AuthorDAO findAll() throws SQLException {
+
+    public AuthorDAO findAll() throws SQLException {
         String sql = "SELECT * FROM auteurs ";
         pstm = DBCN.prepareStatement(sql);
 
@@ -153,33 +150,29 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
         return this;
     }
 
-public List<Author> getAll() throws SQLException{
-    List<Author> studentList = new ArrayList<>();
-    
-    if (resultSet.isBeforeFirst()) {
-        while (! resultSet.isLast()) {
-        studentList.add(this.getOne());
-    }
-    
-        
-    }
-    return studentList;
-}
+    public List<Author> getAll() throws SQLException {
+        List<Author> authorList = new ArrayList<>();
 
-public List<Map<String, String>> getAllAsArray() throws SQLException{
-     List<Map<String, String>> studentList = new ArrayList<>();
-    
-     if (resultSet.isBeforeFirst()) {
-        while (! resultSet.isLast()) {
-        studentList.add(this.getOneAsMap());
-        
-        
-    }
-    }
-     
-    
-    return studentList;
-}
+        if (resultSet.isBeforeFirst()) {
+            while (!resultSet.isLast()) {
+                authorList.add(this.getOne());
+            }
 
+        }
+        return authorList;
+    }
+
+    public List<Map<String, String>> getAllAsArray() throws SQLException {
+        List<Map<String, String>> authorList = new ArrayList<>();
+
+        if (resultSet.isBeforeFirst()) {
+            while (!resultSet.isLast()) {
+                authorList.add(this.getOneAsMap());
+
+            }
+        }
+
+        return authorList;
+    }
 
 }
