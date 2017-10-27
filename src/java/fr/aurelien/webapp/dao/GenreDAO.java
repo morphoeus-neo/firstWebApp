@@ -5,7 +5,7 @@
  */
 package fr.aurelien.webapp.dao;
 
-import fr.aurelien.webapp.entity.Genre;
+import fr.aurelien.webapp.entity.GenreEntity;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author formation
  */
-public class GenreDAO implements DAOInterface<Genre, GenreDAO> {
+public class GenreDAO implements DAOInterface<GenreEntity, GenreDAO> {
 
     private Connection DBCN;
     private PreparedStatement pstm;
@@ -36,7 +36,7 @@ public class GenreDAO implements DAOInterface<Genre, GenreDAO> {
      * @throws java.sql.SQLException
      */
     @Override
-    public int save(Genre entity) throws SQLException {
+    public int save(GenreEntity entity) throws SQLException {
         int affectedRows;
         if (entity.getId() == null) {
             //insertion
@@ -54,7 +54,7 @@ public class GenreDAO implements DAOInterface<Genre, GenreDAO> {
      * @return
      * @throws SQLException
      */
-    private int insert(Genre entity) throws SQLException {
+    private int insert(GenreEntity entity) throws SQLException {
         String sql = "INSERT INTO genres ( genre) VALUES (?)";
 
         pstm = DBCN.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -77,7 +77,7 @@ public class GenreDAO implements DAOInterface<Genre, GenreDAO> {
      * @return
      * @throws SQLException
      */
-    private int update(Genre entity) throws SQLException {
+    private int update(GenreEntity entity) throws SQLException {
 
         String sql = "UPDATE genres SET genre=? WHERE id=?";
 
@@ -89,7 +89,7 @@ public class GenreDAO implements DAOInterface<Genre, GenreDAO> {
     }
 
     @Override
-    public void deleteOneById(Genre entity) throws SQLException {
+    public void deleteOneById(GenreEntity entity) throws SQLException {
         if (entity.getId() != null) {
             String sql = "DELETE FROM genres WHERE id=?";
             pstm = DBCN.prepareStatement(sql);
@@ -120,8 +120,8 @@ public class GenreDAO implements DAOInterface<Genre, GenreDAO> {
      * @throws SQLException
      */
     @Override
-    public Genre getOne() throws SQLException {
-        Genre entity = new Genre();
+    public GenreEntity getOne() throws SQLException {
+        GenreEntity entity = new GenreEntity();
         if (resultSet.next()) {
             entity.setGenre(resultSet.getString("genre"));           
             entity.setId(resultSet.getInt("id"));
@@ -159,8 +159,8 @@ public class GenreDAO implements DAOInterface<Genre, GenreDAO> {
     }
 
     @Override
-    public List<Genre> getAll() throws SQLException {
-        List<Genre> genreList = new ArrayList<>();
+    public List<GenreEntity> getAll() throws SQLException {
+        List<GenreEntity> genreList = new ArrayList<>();
 
         if (resultSet.isBeforeFirst()) {
             while (!resultSet.isLast()) {

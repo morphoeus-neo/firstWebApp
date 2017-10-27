@@ -32,10 +32,13 @@
                         </div>
                         <button type="submit" class="btn btn-default">Valider</button>
                     </form> 
-                    <p><%= request.getAttribute("error")%></p>
+                    <p><% if (request.getAttribute("error") != null) { %>
+                            request.getAttribute("error");
+                        <% } %></p>
+                    
                 </div>                    
             </div>           
         </div>                  
-        <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+
     </body>
 </html>

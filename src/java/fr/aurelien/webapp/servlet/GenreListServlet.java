@@ -7,7 +7,7 @@ package fr.aurelien.webapp.servlet;
 
 import fr.aurelien.webapp.dao.DBCN;
 import fr.aurelien.webapp.dao.GenreDAO;
-import fr.aurelien.webapp.entity.Genre;
+import fr.aurelien.webapp.entity.GenreEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -69,7 +69,7 @@ public class GenreListServlet extends HttpServlet {
         try {
            Connection cn = DBCN.getInstance();
             GenreDAO dao = new GenreDAO(cn);
-            List<Genre> genreList = dao.findAll().getAll();
+            List<GenreEntity> genreList = dao.findAll().getAll();
             request.setAttribute("genreList", genreList);
             
             //Affichage Message d'erreur
@@ -111,7 +111,7 @@ public class GenreListServlet extends HttpServlet {
             // Connexion à la base de donnée
           Connection  cn = DBCN.getInstance();
           GenreDAO dao = new GenreDAO(cn);
-            Genre entity = new Genre();
+            GenreEntity entity = new GenreEntity();
             
             entity.setId(id);
             

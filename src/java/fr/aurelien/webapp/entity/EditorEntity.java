@@ -9,14 +9,14 @@ package fr.aurelien.webapp.entity;
  *
  * @author formation
  */
-public class Editor {
+public class EditorEntity {
     private Integer id;
     private String nom;
 
-    public Editor() {
+    public EditorEntity() {
     }
 
-    public Editor(Integer id, String nom) {
+    public EditorEntity(Integer id, String nom) {
         this.id = id;
         this.nom = nom;
     }

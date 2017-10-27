@@ -7,7 +7,7 @@ package fr.aurelien.webapp.servlet;
 
 import fr.aurelien.webapp.dao.AuthorDAO;
 import fr.aurelien.webapp.dao.DBCN;
-import fr.aurelien.webapp.entity.Author;
+import fr.aurelien.webapp.entity.AuthorEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -69,9 +69,9 @@ public class AuthorFormServlet extends HttpServlet {
         // Récupération du parametre id
         Integer id = Integer.valueOf(request.getParameter("id"));
 
-        // Récupération d'une entité Author en fonction de l'id
-        // Instanciation d'une entité Author
-        Author author = new Author();
+        // Récupération d'une entité AuthorEntity en fonction de l'id
+        // Instanciation d'une entité AuthorEntity
+        AuthorEntity author = new AuthorEntity();
         if (id != null) {
             try {
                 // récupération de l'instance de connection à la base de donnée
@@ -89,7 +89,7 @@ public class AuthorFormServlet extends HttpServlet {
 
         }
 
-        // Définir un attribut pour passer l'entité Author au jsp
+        // Définir un attribut pour passer l'entité AuthorEntity au jsp
         request.setAttribute("author", author);
 
         // Délégation de l'affichage au JSP

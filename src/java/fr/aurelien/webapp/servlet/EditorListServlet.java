@@ -7,7 +7,7 @@ package fr.aurelien.webapp.servlet;
 
 import fr.aurelien.webapp.dao.DBCN;
 import fr.aurelien.webapp.dao.EditorDAO;
-import fr.aurelien.webapp.entity.Editor;
+import fr.aurelien.webapp.entity.EditorEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -69,7 +69,7 @@ public class EditorListServlet extends HttpServlet {
             Connection cn = DBCN.getInstance();
 
             EditorDAO dao = new EditorDAO(cn);
-            List<Editor> editorList = dao.findAll().getAll();
+            List<EditorEntity> editorList = dao.findAll().getAll();
             request.setAttribute("editorList", editorList);
 
             //Affichage Message d'erreur
@@ -106,7 +106,7 @@ public class EditorListServlet extends HttpServlet {
         try {
           Connection  cn = DBCN.getInstance();
           EditorDAO dao = new EditorDAO(cn);
-        Editor entity = new Editor();
+        EditorEntity entity = new EditorEntity();
         
         entity.setId(id);
         

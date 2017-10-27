@@ -4,7 +4,7 @@
     Author     : formation
 --%>
 
-<%@page import="fr.aurelien.webapp.entity.Editor"%>
+<%@page import="fr.aurelien.webapp.entity.EditorEntity"%>
 
 
 <%@page import="java.util.List"%>
@@ -12,7 +12,7 @@
 <%@include file="_partials/_header.jspf" %>
 
 
-<% Editor editor = (Editor) request.getAttribute("editor");%>
+<% EditorEntity editor = (EditorEntity) request.getAttribute("editor");%>
 
 <div class="container-fluid">
     <div class="row">

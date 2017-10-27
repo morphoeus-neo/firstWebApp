@@ -7,7 +7,7 @@ package fr.aurelien.webapp.servlet;
 
 import fr.aurelien.webapp.dao.AuthorDAO;
 import fr.aurelien.webapp.dao.DBCN;
-import fr.aurelien.webapp.entity.Author;
+import fr.aurelien.webapp.entity.AuthorEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -69,7 +69,7 @@ public class AuthorListServlet extends HttpServlet {
             Connection cn = DBCN.getInstance();
 
             AuthorDAO dao = new AuthorDAO(cn);
-            List<Author> authorList = dao.findAll().getAll();
+            List<AuthorEntity> authorList = dao.findAll().getAll();
             request.setAttribute("authorList", authorList);
             
             //String message = String.valueOf(request.getSession().setAttribute("message"));
@@ -109,7 +109,7 @@ public class AuthorListServlet extends HttpServlet {
             Connection cn = DBCN.getInstance();
             
             AuthorDAO dao = new AuthorDAO(cn);
-            Author entity = new Author();
+            AuthorEntity entity = new AuthorEntity();
             entity.setId(id);
             
             if (dao.hasBook(entity)) {

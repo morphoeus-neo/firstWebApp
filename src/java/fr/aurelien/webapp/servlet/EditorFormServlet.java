@@ -7,7 +7,7 @@ package fr.aurelien.webapp.servlet;
 
 import fr.aurelien.webapp.dao.DBCN;
 import fr.aurelien.webapp.dao.EditorDAO;
-import fr.aurelien.webapp.entity.Editor;
+import fr.aurelien.webapp.entity.EditorEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -68,7 +68,7 @@ public class EditorFormServlet extends HttpServlet {
 
         // Récupération d'une entité Author en fonction de l'id
         // Instanciation d'une entité Author
-        Editor editor = new Editor();
+        EditorEntity editor = new EditorEntity();
         if (id != null) {
 
             // récupération de l'instance de connection à la base de donnée

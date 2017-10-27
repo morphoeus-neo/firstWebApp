@@ -3,7 +3,7 @@
     Created on : 24 oct. 2017, 15:24:19
     Author     : Aurelien Courgeau
 --%>
-<%@page import="fr.aurelien.webapp.entity.Author"%>
+<%@page import="fr.aurelien.webapp.entity.AuthorEntity"%>
 
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,7 +23,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6 col-lg-offset-3">
-            <% List<Author> authorList = (List<Author>) request.getAttribute("authorList"); %>
+            <% List<AuthorEntity> authorList = (List<AuthorEntity>) request.getAttribute("authorList"); %>
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
@@ -34,8 +34,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%! Author author; %>
-                    <% for (Author author : authorList) { %>
+                    <%! AuthorEntity author; %>
+                    <% for (AuthorEntity author : authorList) { %>
                     <tr>
                         <td style="text-align: center"> <%= author.getId()%></td>
                         <td> <%= author.getFirstName()%></td>

@@ -3,7 +3,7 @@
     Created on : 26 oct. 2017, 12:43:59
     Author     : formation
 --%>
-<%@page import="fr.aurelien.webapp.entity.Editor"%>
+<%@page import="fr.aurelien.webapp.entity.EditorEntity"%>
 
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -21,7 +21,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6 col-lg-offset-3">
-             <% List<Editor> editorList = (List<Editor>) request.getAttribute("editorList"); %>
+             <% List<EditorEntity> editorList = (List<EditorEntity>) request.getAttribute("editorList"); %>
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
@@ -32,8 +32,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                     <%! Editor editor; %>
-                    <% for (Editor editor : editorList) { %>
+                     <%! EditorEntity editor; %>
+                    <% for (EditorEntity editor : editorList) { %>
                     <tr>
                         <td style="text-align: center"> <%= editor.getId()%></td>
                         <td> <%= editor.getNom()%></td>

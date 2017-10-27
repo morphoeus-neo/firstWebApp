@@ -5,7 +5,7 @@
  */
 package fr.aurelien.webapp.dao;
 
-import fr.aurelien.webapp.entity.Editor;
+import fr.aurelien.webapp.entity.EditorEntity;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author formation
  */
-public class EditorDAO implements DAOInterface<Editor, EditorDAO> {
+public class EditorDAO implements DAOInterface<EditorEntity, EditorDAO> {
 
     private Connection DBCN;
     private PreparedStatement pstm;
@@ -27,16 +27,16 @@ public class EditorDAO implements DAOInterface<Editor, EditorDAO> {
 
     }
 
-    // un objet de type Editor
+    // un objet de type EditorEntity
     /**
-     * Persistance de l'entité Editor
+     * Persistance de l'entité EditorEntity
      *
      * @param entity
      * @return
      * @throws java.sql.SQLException
      */
     @Override
-    public int save(Editor entity) throws SQLException {
+    public int save(EditorEntity entity) throws SQLException {
         int affectedRows;
         if (entity.getId() == null) {
             //insertion
@@ -54,7 +54,7 @@ public class EditorDAO implements DAOInterface<Editor, EditorDAO> {
      * @return
      * @throws SQLException
      */
-    private int insert(Editor entity) throws SQLException {
+    private int insert(EditorEntity entity) throws SQLException {
         String sql = "INSERT INTO editeurs (nom) VALUES (?)";
 
         pstm = DBCN.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -77,7 +77,7 @@ public class EditorDAO implements DAOInterface<Editor, EditorDAO> {
      * @return
      * @throws SQLException
      */
-    private int update(Editor entity) throws SQLException {
+    private int update(EditorEntity entity) throws SQLException {
 
         String sql = "UPDATE editeurs SET nom=? WHERE id=?";
 
@@ -89,7 +89,7 @@ public class EditorDAO implements DAOInterface<Editor, EditorDAO> {
     }
 
     @Override
-    public void deleteOneById(Editor entity) throws SQLException {
+    public void deleteOneById(EditorEntity entity) throws SQLException {
         if (entity.getId() != null) {
             String sql = "DELETE FROM editeurs WHERE id=?";
             pstm = DBCN.prepareStatement(sql);
@@ -120,8 +120,8 @@ public class EditorDAO implements DAOInterface<Editor, EditorDAO> {
      * @throws SQLException
      */
     @Override
-    public Editor getOne() throws SQLException {
-        Editor entity = new Editor();
+    public EditorEntity getOne() throws SQLException {
+        EditorEntity entity = new EditorEntity();
         if (resultSet.next()) {
             entity.setNom(resultSet.getString("nom"));           
             entity.setId(resultSet.getInt("id"));
@@ -160,8 +160,8 @@ public class EditorDAO implements DAOInterface<Editor, EditorDAO> {
     }
 
     @Override
-    public List<Editor> getAll() throws SQLException {
-        List<Editor> EditorList = new ArrayList<>();
+    public List<EditorEntity> getAll() throws SQLException {
+        List<EditorEntity> EditorList = new ArrayList<>();
 
         if (resultSet.isBeforeFirst()) {
             while (!resultSet.isLast()) {

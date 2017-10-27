@@ -5,7 +5,7 @@
  */
 package fr.aurelien.webapp.dao;
 
-import fr.aurelien.webapp.entity.Author;
+import fr.aurelien.webapp.entity.AuthorEntity;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author formation
  */
-public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
+public class AuthorDAO implements DAOInterface<AuthorEntity, AuthorDAO> {
 
     private Connection DBCN;
     private PreparedStatement pstm;
@@ -36,7 +36,7 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
      * @throws java.sql.SQLException
      */
     @Override
-    public int save(Author entity) throws SQLException {
+    public int save(AuthorEntity entity) throws SQLException {
         int affectedRows;
         if (entity.getId() == null) {
             //insertion
@@ -54,7 +54,7 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
      * @return
      * @throws SQLException
      */
-    private int insert(Author entity) throws SQLException {
+    private int insert(AuthorEntity entity) throws SQLException {
         String sql = "INSERT INTO auteurs ( nom, prenom) VALUES (?,?)";
 
         pstm = DBCN.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -77,7 +77,7 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
      * @return
      * @throws SQLException
      */
-    private int update(Author entity) throws SQLException {
+    private int update(AuthorEntity entity) throws SQLException {
 
         String sql = "UPDATE auteurs SET nom=?, prenom=? WHERE id=?";
 
@@ -90,7 +90,7 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
     }
 
     @Override
-    public void deleteOneById(Author entity) throws SQLException {
+    public void deleteOneById(AuthorEntity entity) throws SQLException {
         if (entity.getId() != null) {
             String sql = "DELETE FROM auteurs WHERE id=?";
             pstm = DBCN.prepareStatement(sql);
@@ -113,8 +113,8 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
      * @return
      * @throws SQLException
      */
-    public Author getOne() throws SQLException {
-        Author entity = new Author();
+    public AuthorEntity getOne() throws SQLException {
+        AuthorEntity entity = new AuthorEntity();
         if (resultSet.next()) {
             entity.setName(resultSet.getString("nom"));
             entity.setFirstName(resultSet.getString("prenom"));
@@ -150,8 +150,8 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
         return this;
     }
 
-    public List<Author> getAll() throws SQLException {
-        List<Author> authorList = new ArrayList<>();
+    public List<AuthorEntity> getAll() throws SQLException {
+        List<AuthorEntity> authorList = new ArrayList<>();
 
         if (resultSet.isBeforeFirst()) {
             while (!resultSet.isLast()) {
@@ -175,7 +175,7 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
         return authorList;
     }
 
-    public boolean hasBook(Author entity) throws SQLException {
+    public boolean hasBook(AuthorEntity entity) throws SQLException {
         String sql = "SELECT EXISTS("
                 + "SELECT id FROM livres WHERE auteur_id=?)"
                 + " as found ";

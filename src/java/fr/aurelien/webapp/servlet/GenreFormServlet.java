@@ -5,8 +5,15 @@
  */
 package fr.aurelien.webapp.servlet;
 
+import fr.aurelien.webapp.dao.DBCN;
+import fr.aurelien.webapp.dao.GenreDAO;
+import fr.aurelien.webapp.entity.GenreEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -56,11 +63,45 @@ public class GenreFormServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Affichage du JSP
-            getServletContext()
-                    .getRequestDispatcher("/genre-form.jsp")
-                    .forward(request, response);
+        
+        
+       Integer id = Integer.valueOf(request.getParameter("id"));
+
+        // Récupération d'une entité Author en fonction de l'id
+        // Instanciation d'une entité Author
+        GenreEntity genre = new GenreEntity();
+        if (id != null) {
+
+            // récupération de l'instance de connection à la base de donnée
+            
+                 
+           try {
+             Connection  cn = DBCN.getInstance();
+                               // instanciation du DAO
+                GenreDAO dao = new GenreDAO(cn);
+                // Affetation de la variable author avec la requette executée
+                genre = dao.findOneById(id).getOne();
+               
+           } catch (SQLException ex) {
+               Logger.getLogger(GenreFormServlet.class.getName()).log(Level.SEVERE, null, ex);
+           } catch (ClassNotFoundException ex) {
+               Logger.getLogger(GenreFormServlet.class.getName()).log(Level.SEVERE, null, ex);
+           }
+
+
+
+        }
+
+        // Définir un attribut pour passer l'entité Author au jsp
+        request.setAttribute("genre", genre);
+
+        // Délégation de l'affichage au JSP
+        getServletContext()
+                .getRequestDispatcher("/genre-form.jsp")
+                .forward(request, response);
     }
+
+    
 
     /**
      * Handles the HTTP <code>POST</code> method.

@@ -9,14 +9,14 @@ package fr.aurelien.webapp.entity;
  *
  * @author Aurelien Courgeau
  */
-public class Genre {
+public class GenreEntity {
     private Integer id;
     private String genre;
 
-    public Genre() {
+    public GenreEntity() {
     }
 
-    public Genre(Integer id, String genre) {
+    public GenreEntity(Integer id, String genre) {
         this.id = id;
         this.genre = genre;
     }

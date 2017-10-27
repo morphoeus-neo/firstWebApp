@@ -3,7 +3,7 @@
     Created on : 26 oct. 2017, 12:43:59
     Author     : formation
 --%>
-<%@page import="fr.aurelien.webapp.entity.Genre"%>
+<%@page import="fr.aurelien.webapp.entity.GenreEntity"%>
 
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -21,7 +21,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6 col-lg-offset-3">
-             <% List<Genre> genreList = (List<Genre>) request.getAttribute("genreList"); %>
+             <% List<GenreEntity> genreList = (List<GenreEntity>) request.getAttribute("genreList"); %>
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
@@ -32,8 +32,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                     <%! Genre genre; %>
-                    <% for (Genre genre : genreList) { %>
+                     <%! GenreEntity genre; %>
+                    <% for (GenreEntity genre : genreList) { %>
                     <tr>
                         <td style="text-align: center"> <%= genre.getId()%></td>
                         <td> <%= genre.getGenre()%></td>

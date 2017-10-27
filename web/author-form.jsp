@@ -3,14 +3,14 @@
     Created on : 25 oct. 2017, 16:30:14
     Author     : formation
 --%>
-<%@page import="fr.aurelien.webapp.entity.Author"%>
+<%@page import="fr.aurelien.webapp.entity.AuthorEntity"%>
 
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="_partials/_header.jspf" %>
 
 
-<% Author author = (Author) request.getAttribute("author"); %>
+<% AuthorEntity author = (AuthorEntity) request.getAttribute("author"); %>
 
 <div class="container-fluid">
     <div class="row">

@@ -11,17 +11,17 @@ import java.io.Serializable;
  *
  * @author formation
  */
-public class Author implements Serializable{
+public class AuthorEntity implements Serializable{
     private Integer id;
     private String name;
     private String firstName;
 
     
 
-    public Author() {
+    public AuthorEntity() {
     }
     
-    public Author(Integer id, String name, String firstName) {
+    public AuthorEntity(Integer id, String name, String firstName) {
         this.id = id;
         this.name = name;
         this.firstName = firstName;
