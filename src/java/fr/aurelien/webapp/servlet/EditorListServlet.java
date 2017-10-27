@@ -5,9 +5,9 @@
  */
 package fr.aurelien.webapp.servlet;
 
-import fr.aurelien.webapp.dao.AuthorDAO;
 import fr.aurelien.webapp.dao.DBCN;
-import fr.aurelien.webapp.entity.Author;
+import fr.aurelien.webapp.dao.EditorDAO;
+import fr.aurelien.webapp.entity.Editor;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author formation
  */
-public class AuthorListServlet extends HttpServlet {
+public class EditorListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +43,10 @@ public class AuthorListServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AuthorListServlet</title>");
+            out.println("<title>Servlet EditorListServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AuthorListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet EditorListServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,25 +68,23 @@ public class AuthorListServlet extends HttpServlet {
         try {
             Connection cn = DBCN.getInstance();
 
-            AuthorDAO dao = new AuthorDAO(cn);
-            List<Author> authorList = dao.findAll().getAll();
-            request.setAttribute("authorList", authorList);
-            
-            //String message = String.valueOf(request.getSession().setAttribute("message"));
+            EditorDAO dao = new EditorDAO(cn);
+            List<Editor> editorList = dao.findAll().getAll();
+            request.setAttribute("editorList", editorList);
 
-            if(request.getSession().getAttribute("message") != null){
+            //Affichage Message d'erreur
+            if (request.getSession().getAttribute("message") != null) {
                 request.setAttribute("message", request.getSession().getAttribute("message"));
                 request.getSession().removeAttribute("message");
             }
-            //Affichage du JSP
             getServletContext()
-                    .getRequestDispatcher("/author-list.jsp")
+                    .getRequestDispatcher("/editor-list.jsp")
                     .forward(request, response);
 
         } catch (SQLException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditorListServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditorListServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -102,33 +100,28 @@ public class AuthorListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+        int id = Integer.valueOf(request.getParameter("id"));
+         
         try {
-            int id = Integer.valueOf(request.getParameter("id"));
-            
-            Connection cn = DBCN.getInstance();
-            
-            AuthorDAO dao = new AuthorDAO(cn);
-            Author entity = new Author();
-            entity.setId(id);
-            
-            if (dao.hasBook(entity)) {
-                request.getSession().setAttribute("message", "la ligne " 
-                        + entity.getId()
-                        +" n'as pas pu etres supprimé car l'auteur a des livres");
-            }else{
-            
-            dao.deleteOneById(entity);         
-            
-            request.getSession().setAttribute("message", "la ligne " + entity.getId()+" a bien été supprimé");
-            }
-            response.sendRedirect("/firstWebApp/author-list");
-            
+          Connection  cn = DBCN.getInstance();
+          EditorDAO dao = new EditorDAO(cn);
+        Editor entity = new Editor();
+        
+        entity.setId(id);
+        
+        dao.deleteOneById(entity);
+        // Affichage du message d'erreur
+        request.getSession().setAttribute("message", "la ligne " + entity.getId() + " a bien été supprimé");
+        //Redirection
+        response.sendRedirect("/firstWebApp/editor-list");
+          
         } catch (SQLException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditorListServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditorListServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     /**

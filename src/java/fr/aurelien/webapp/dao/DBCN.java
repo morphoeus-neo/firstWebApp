@@ -32,7 +32,7 @@ public class DBCN {
      */
     public static Connection getInstance() throws SQLException, ClassNotFoundException {
         if (instance == null) {
-            Class.forName("org.git.mm.mysql.Driver");
+            Class.forName("org.gjt.mm.mysql.Driver");
             instance = DriverManager.getConnection(
                     "jdbc:mysql://localhost/bibliotheque",
                     "root",

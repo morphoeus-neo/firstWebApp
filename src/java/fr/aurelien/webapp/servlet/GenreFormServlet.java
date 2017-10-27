@@ -5,16 +5,8 @@
  */
 package fr.aurelien.webapp.servlet;
 
-import fr.aurelien.webapp.dao.AuthorDAO;
-import fr.aurelien.webapp.dao.DBCN;
-import fr.aurelien.webapp.entity.Author;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author formation
  */
-public class AuthorListServlet extends HttpServlet {
+public class GenreFormServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +35,10 @@ public class AuthorListServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AuthorListServlet</title>");
+            out.println("<title>Servlet GenreFormServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AuthorListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GenreFormServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,31 +56,10 @@ public class AuthorListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        try {
-            Connection cn = DBCN.getInstance();
-
-            AuthorDAO dao = new AuthorDAO(cn);
-            List<Author> authorList = dao.findAll().getAll();
-            request.setAttribute("authorList", authorList);
-            
-            //String message = String.valueOf(request.getSession().setAttribute("message"));
-
-            if(request.getSession().getAttribute("message") != null){
-                request.setAttribute("message", request.getSession().getAttribute("message"));
-                request.getSession().removeAttribute("message");
-            }
-            //Affichage du JSP
+        //Affichage du JSP
             getServletContext()
-                    .getRequestDispatcher("/author-list.jsp")
+                    .getRequestDispatcher("/genre-form.jsp")
                     .forward(request, response);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     /**
@@ -102,33 +73,9 @@ public class AuthorListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        try {
-            int id = Integer.valueOf(request.getParameter("id"));
-            
-            Connection cn = DBCN.getInstance();
-            
-            AuthorDAO dao = new AuthorDAO(cn);
-            Author entity = new Author();
-            entity.setId(id);
-            
-            if (dao.hasBook(entity)) {
-                request.getSession().setAttribute("message", "la ligne " 
-                        + entity.getId()
-                        +" n'as pas pu etres supprimé car l'auteur a des livres");
-            }else{
-            
-            dao.deleteOneById(entity);         
-            
-            request.getSession().setAttribute("message", "la ligne " + entity.getId()+" a bien été supprimé");
-            }
-            response.sendRedirect("/firstWebApp/author-list");
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        getServletContext()
+                    .getRequestDispatcher("/genre-form.jsp")
+                    .forward(request, response);
     }
 
     /**

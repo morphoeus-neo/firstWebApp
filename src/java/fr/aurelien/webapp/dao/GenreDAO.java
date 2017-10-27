@@ -5,7 +5,7 @@
  */
 package fr.aurelien.webapp.dao;
 
-import fr.aurelien.webapp.entity.Author;
+import fr.aurelien.webapp.entity.Genre;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,27 +16,27 @@ import java.util.Map;
  *
  * @author formation
  */
-public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
+public class GenreDAO implements DAOInterface<Genre, GenreDAO> {
 
     private Connection DBCN;
     private PreparedStatement pstm;
     private ResultSet resultSet;
 
-    public AuthorDAO(Connection dbConnection) {
+    public GenreDAO(Connection dbConnection) {
         this.DBCN = dbConnection;
 
     }
 
-    // un objet de type author
+    // un objet de type genre
     /**
-     * Persistance de l'entité author
+     * Persistance de l'entité genre
      *
      * @param entity
      * @return
      * @throws java.sql.SQLException
      */
     @Override
-    public int save(Author entity) throws SQLException {
+    public int save(Genre entity) throws SQLException {
         int affectedRows;
         if (entity.getId() == null) {
             //insertion
@@ -54,12 +54,12 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
      * @return
      * @throws SQLException
      */
-    private int insert(Author entity) throws SQLException {
-        String sql = "INSERT INTO auteurs ( nom, prenom) VALUES (?,?)";
+    private int insert(Genre entity) throws SQLException {
+        String sql = "INSERT INTO genres ( genre) VALUES (?)";
 
         pstm = DBCN.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        pstm.setString(1, entity.getName());
-        pstm.setString(2, entity.getFirstName());
+        pstm.setString(1, entity.getGenre());
+        
 
         // Récupération de la clef auto incrémentée
         ResultSet keyRs = pstm.getGeneratedKeys();
@@ -77,30 +77,36 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
      * @return
      * @throws SQLException
      */
-    private int update(Author entity) throws SQLException {
+    private int update(Genre entity) throws SQLException {
 
-        String sql = "UPDATE auteurs SET nom=?, prenom=? WHERE id=?";
+        String sql = "UPDATE genres SET genre=? WHERE id=?";
 
         pstm = DBCN.prepareStatement(sql);
-        pstm.setString(1, entity.getName());
-        pstm.setString(2, entity.getFirstName());
+        pstm.setString(1, entity.getGenre());        
         pstm.setInt(3, entity.getId());
 
         return pstm.executeUpdate();
     }
 
     @Override
-    public void deleteOneById(Author entity) throws SQLException {
+    public void deleteOneById(Genre entity) throws SQLException {
         if (entity.getId() != null) {
-            String sql = "DELETE FROM auteurs WHERE id=?";
+            String sql = "DELETE FROM genres WHERE id=?";
             pstm = DBCN.prepareStatement(sql);
             pstm.setInt(1, entity.getId());
             pstm.executeUpdate();
         }
     }
 
-    public AuthorDAO findOneById(int id) throws SQLException {
-        String sql = "SELECT * FROM auteurs WHERE id=?";
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public GenreDAO findOneById(int id) throws SQLException {
+        String sql = "SELECT * FROM genres WHERE id=?";
         pstm = DBCN.prepareStatement(sql);
         pstm.setInt(1, id);
         resultSet = pstm.executeQuery();
@@ -113,11 +119,11 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
      * @return
      * @throws SQLException
      */
-    public Author getOne() throws SQLException {
-        Author entity = new Author();
+    @Override
+    public Genre getOne() throws SQLException {
+        Genre entity = new Genre();
         if (resultSet.next()) {
-            entity.setName(resultSet.getString("nom"));
-            entity.setFirstName(resultSet.getString("prenom"));
+            entity.setGenre(resultSet.getString("genre"));           
             entity.setId(resultSet.getInt("id"));
 
         }
@@ -131,71 +137,59 @@ public class AuthorDAO implements DAOInterface<Author, AuthorDAO> {
      * @return
      * @throws SQLException
      */
+    @Override
     public Map<String, String> getOneAsMap() throws SQLException {
-        Map<String, String> authorData = new HashMap<>();
+        Map<String, String> genreData = new HashMap<>();
         if (resultSet.next()) {
-            authorData.put("name", resultSet.getString("nom"));
-            authorData.put("firstName", resultSet.getString("prenom"));
+            genreData.put("genre", resultSet.getString("genre"));
+            
 
         }
 
-        return authorData;
+        return genreData;
     }
 
-    public AuthorDAO findAll() throws SQLException {
-        String sql = "SELECT * FROM auteurs ";
+    @Override
+    public GenreDAO findAll() throws SQLException {
+        String sql = "SELECT * FROM genres ";
         pstm = DBCN.prepareStatement(sql);
 
         resultSet = pstm.executeQuery();
         return this;
     }
 
-    public List<Author> getAll() throws SQLException {
-        List<Author> authorList = new ArrayList<>();
+    @Override
+    public List<Genre> getAll() throws SQLException {
+        List<Genre> genreList = new ArrayList<>();
 
         if (resultSet.isBeforeFirst()) {
             while (!resultSet.isLast()) {
-                authorList.add(this.getOne());
+                genreList.add(this.getOne());
             }
 
         }
-        return authorList;
+        return genreList;
     }
 
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
+    @Override
     public List<Map<String, String>> getAllAsArray() throws SQLException {
-        List<Map<String, String>> authorList = new ArrayList<>();
+        List<Map<String, String>> genreList = new ArrayList<>();
 
         if (resultSet.isBeforeFirst()) {
             while (!resultSet.isLast()) {
-                authorList.add(this.getOneAsMap());
+                genreList.add(this.getOneAsMap());
 
             }
         }
 
-        return authorList;
+        return genreList;
     }
 
-    public boolean hasBook(Author entity) throws SQLException {
-        String sql = "SELECT EXISTS("
-                + "SELECT id FROM livres WHERE auteur_id=?)"
-                + " as found ";
-        
-        Boolean found = false;
-        
-        pstm = DBCN.prepareStatement(sql);
-        pstm.setInt(1, entity.getId());
-        
-        resultSet = pstm.executeQuery();
-        
-        if (resultSet.next()) {
-            int rsFound = resultSet.getInt("found");
-            found = rsFound > 0;
-        }
-;
-        
-        
-        return found;
-        
-    }
+
 
 }

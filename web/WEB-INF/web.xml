@@ -4,9 +4,41 @@
         <servlet-name>AuthorListServlet</servlet-name>
         <servlet-class>fr.aurelien.webapp.servlet.AuthorListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GenreListServlet</servlet-name>
+        <servlet-class>fr.aurelien.webapp.servlet.GenreListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GenreFormServlet</servlet-name>
+        <servlet-class>fr.aurelien.webapp.servlet.GenreFormServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditorListServlet</servlet-name>
+        <servlet-class>fr.aurelien.webapp.servlet.EditorListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditorFormServlet</servlet-name>
+        <servlet-class>fr.aurelien.webapp.servlet.EditorFormServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthorListServlet</servlet-name>
         <url-pattern>/author-list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenreListServlet</servlet-name>
+        <url-pattern>/genre-list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenreFormServlet</servlet-name>
+        <url-pattern>/genre-form</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditorListServlet</servlet-name>
+        <url-pattern>/editor-list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditorFormServlet</servlet-name>
+        <url-pattern>/editor-form</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

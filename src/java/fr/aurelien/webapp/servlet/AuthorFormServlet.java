@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author formation
  */
-public class AuthorListServlet extends HttpServlet {
+@WebServlet(name = "AuthorFormServlet", urlPatterns = {"/author-form"})
+public class AuthorFormServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +44,10 @@ public class AuthorListServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AuthorListServlet</title>");
+            out.println("<title>Servlet AuthorFormServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AuthorListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AuthorFormServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,30 +66,36 @@ public class AuthorListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        try {
-            Connection cn = DBCN.getInstance();
+        // Récupération du parametre id
+        Integer id = Integer.valueOf(request.getParameter("id"));
 
-            AuthorDAO dao = new AuthorDAO(cn);
-            List<Author> authorList = dao.findAll().getAll();
-            request.setAttribute("authorList", authorList);
-            
-            //String message = String.valueOf(request.getSession().setAttribute("message"));
+        // Récupération d'une entité Author en fonction de l'id
+        // Instanciation d'une entité Author
+        Author author = new Author();
+        if (id != null) {
+            try {
+                // récupération de l'instance de connection à la base de donnée
+                Connection cn = DBCN.getInstance();
+                // instanciation du DAO
+                AuthorDAO dao = new AuthorDAO(cn);
+                // Affetation de la variable author avec la requette executée
+                author = dao.findOneById(id).getOne();
 
-            if(request.getSession().getAttribute("message") != null){
-                request.setAttribute("message", request.getSession().getAttribute("message"));
-                request.getSession().removeAttribute("message");
+            } catch (SQLException ex) {
+                Logger.getLogger(AuthorFormServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(AuthorFormServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //Affichage du JSP
-            getServletContext()
-                    .getRequestDispatcher("/author-list.jsp")
-                    .forward(request, response);
 
-        } catch (SQLException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        // Définir un attribut pour passer l'entité Author au jsp
+        request.setAttribute("author", author);
+
+        // Délégation de l'affichage au JSP
+        getServletContext()
+                .getRequestDispatcher("/author-form.jsp")
+                .forward(request, response);
     }
 
     /**
@@ -102,33 +109,7 @@ public class AuthorListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        try {
-            int id = Integer.valueOf(request.getParameter("id"));
-            
-            Connection cn = DBCN.getInstance();
-            
-            AuthorDAO dao = new AuthorDAO(cn);
-            Author entity = new Author();
-            entity.setId(id);
-            
-            if (dao.hasBook(entity)) {
-                request.getSession().setAttribute("message", "la ligne " 
-                        + entity.getId()
-                        +" n'as pas pu etres supprimé car l'auteur a des livres");
-            }else{
-            
-            dao.deleteOneById(entity);         
-            
-            request.getSession().setAttribute("message", "la ligne " + entity.getId()+" a bien été supprimé");
-            }
-            response.sendRedirect("/firstWebApp/author-list");
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AuthorListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -5,11 +5,13 @@
  */
 package fr.aurelien.webapp.entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author formation
  */
-public class Author {
+public class Author implements Serializable{
     private Integer id;
     private String name;
     private String firstName;

@@ -5,7 +5,7 @@
 --%>
 <%@include file="_partials/_header.jspf"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-    <body>
+    
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
